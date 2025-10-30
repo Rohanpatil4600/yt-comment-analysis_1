@@ -106,7 +106,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 272926213786.dkr.ecr.us-east-2.amazonaws.com
+          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 272926213786.dkr.ecr.us-east-2.amazonaws.com
 
       - name: Build Docker image
         if: success()
