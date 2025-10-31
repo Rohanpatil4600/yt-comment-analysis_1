@@ -295,6 +295,7 @@
 
 
 # app.py
+import traceback
 
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend before importing pyplot
@@ -348,21 +349,24 @@ def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
     return model, vectorizer
 
 # Ensure input matches the vectorizer's vocabulary
+# def align_input_to_vocab(vectorizer, preprocessed_comments):
+#     """Align input to match the vectorizer's training vocabulary."""
+#     try:
+#         input_transformed = vectorizer.transform(preprocessed_comments)
+#         trained_vocab_size = len(vectorizer.get_feature_names_out())
+
+#         # Ensure consistency in shape by padding with zeros
+#         if input_transformed.shape[1] < trained_vocab_size:
+#             padding = csr_matrix((input_transformed.shape[0], trained_vocab_size - input_transformed.shape[1]))
+#             input_transformed = hstack([input_transformed, padding])
+
+#         return input_transformed
+#     except Exception as e:
+#         print(f"Error during alignment to vocabulary: {e}")
+#         raise
 def align_input_to_vocab(vectorizer, preprocessed_comments):
-    """Align input to match the vectorizer's training vocabulary."""
-    try:
-        input_transformed = vectorizer.transform(preprocessed_comments)
-        trained_vocab_size = len(vectorizer.get_feature_names_out())
-
-        # Ensure consistency in shape by padding with zeros
-        if input_transformed.shape[1] < trained_vocab_size:
-            padding = csr_matrix((input_transformed.shape[0], trained_vocab_size - input_transformed.shape[1]))
-            input_transformed = hstack([input_transformed, padding])
-
-        return input_transformed
-    except Exception as e:
-        print(f"Error during alignment to vocabulary: {e}")
-        raise
+    """Transform comments using the existing TF-IDF vectorizer."""
+    return vectorizer.transform(preprocessed_comments)
 
 
 @app.route('/')
