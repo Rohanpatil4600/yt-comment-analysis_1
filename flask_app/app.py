@@ -371,7 +371,7 @@ def align_input_to_vocab(vectorizer, preprocessed_comments):
 
 @app.route('/')
 def home():
-    return "Welcome to the flask api"
+    return "Welcome to the  flask api"
 
 @app.route('/health')
 def health():
