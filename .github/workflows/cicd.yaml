@@ -122,3 +122,28 @@ jobs:
         if: success()
         run: |
           docker push 272926213786.dkr.ecr.us-east-2.amazonaws.com/yt-chrome-plugin:latest
+
+      - name: Zip files for deployment
+        if: success()
+        run: |
+          zip -r deployment.zip appspec.yml deploy/scripts/install_dependencies.sh deploy/scripts/start_docker.sh
+
+      # Upload the ZIP file to S3
+      - name: Upload ZIP to S3
+        if: success()
+        run: |
+          aws s3 cp deployment.zip s3://yt-codedeploy-bucket/deployment.zip
+
+      # Deploy to AWS CodeDeploy using the uploaded ZIP file
+      - name: Deploy to AWS CodeDeploy
+        if: success()
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws deploy create-deployment \
+            --application-name YTchromeplugin \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name yt-chrome-group \
+            --s3-location bucket=yt-codedeploy-bucket,key=deployment.zip,bundleType=zip \
+            --file-exists-behavior OVERWRITE \
+            --region us-east-2
