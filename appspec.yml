@@ -1,42 +1,15 @@
 version: 0.0
 os: linux
-
 files:
-  # Copy your entire repository contents to the EC2 instance under /home/ubuntu/deploy
   - source: /
-    destination: /home/ubuntu/deploy
-
-permissions:
-  - object: /home/ubuntu/deploy
-    owner: ubuntu
-    group: ubuntu
-    mode: 755
-    type:
-      - file
-      - directory
-
+    destination: /home/ubuntu/app
 hooks:
   BeforeInstall:
-    - location: deploy/scripts/before_install.sh
+    - location: deploy/scripts/install_dependencies.sh
       timeout: 300
-      runas: root
-
-  Install:
-    - location: deploy/scripts/install.sh
-      timeout: 300
-      runas: root
-
-  AfterInstall:
-    - location: deploy/scripts/after_install.sh
-      timeout: 300
-      runas: root
-
+      runas: ubuntu
   ApplicationStart:
     - location: deploy/scripts/start_docker.sh
-      timeout: 600
-      runas: root
-
-  ValidateService:
-    - location: deploy/scripts/validate.sh
       timeout: 300
-      runas: root
+      runas: ubuntu
+
