@@ -2,7 +2,7 @@ import mlflow
 import pytest
 import pandas as pd
 import pickle
-from mlflow.tracking import MlflowClient
+from mlflow.tracking import MlflowClient 
 
 # Set your remote tracking URI
 mlflow.set_tracking_uri("http://ec2-18-189-13-9.us-east-2.compute.amazonaws.com:8000")
