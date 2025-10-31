@@ -1,14 +1,46 @@
+# version: 0.0
+# os: linux
+# files:
+#   - source: /
+#     destination: /home/ubuntu/app
+# hooks:
+#   BeforeInstall:
+#     - location: deploy/scripts/install_dependencies.sh
+#       timeout: 300
+#       runas: ubuntu
+#   ApplicationStart:
+#     - location: deploy/scripts/start_docker.sh
+#       timeout: 300
+#       runas: ubuntu
+
 version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/app
+    destination: /home/ubuntu/deploy
+
 hooks:
   BeforeInstall:
-    - location: deploy/scripts/install_dependencies.sh
+    - location: deploy/scripts/before_install.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
+
+  Install:
+    - location: deploy/scripts/install.sh
+      timeout: 300
+      runas: root
+
+  AfterInstall:
+    - location: deploy/scripts/after_install.sh
+      timeout: 300
+      runas: root
+
   ApplicationStart:
     - location: deploy/scripts/start_docker.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
+
+  ValidateService:
+    - location: deploy/scripts/validate.sh
+      timeout: 300
+      runas: root
