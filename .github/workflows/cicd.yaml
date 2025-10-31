@@ -141,9 +141,9 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws deploy create-deployment \
-            --application-name YTchromeplugin \
+            --application-name YTChromePlugin \
             --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name ytchromedeploy \
+            --deployment-group-name YTDeploymentGroup \
             --s3-location bucket=yt-codedeploy-bucket,key=deployment.zip,bundleType=zip \
             --file-exists-behavior OVERWRITE \
             --region us-east-2
